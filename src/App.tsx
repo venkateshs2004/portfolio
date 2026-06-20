@@ -3,9 +3,22 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 
 export default function App() {
   const email: string = '04venkateshs@gmail.com';
+  const mailtoUrl: string = `mailto:${email}?subject=Portfolio%20Inquiry`;
   const resumeUrl: string = `${import.meta.env.BASE_URL}resume.pdf`;
   const githubUrl: string = 'https://github.com/venkateshs2004';
   const linkedinUrl: string = 'https://linkedin.com/in/venkatesh-s-5665';
+
+  const handleEmailClick = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch {
+      // Ignore clipboard failures and still attempt to open the mail client.
+    }
+
+    window.location.href = mailtoUrl;
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
@@ -31,7 +44,8 @@ export default function App() {
             View Resume
           </a>
           <a
-            href={`mailto:${email}?subject=Portfolio%20Inquiry`}
+            href={mailtoUrl}
+            onClick={handleEmailClick}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-medium transition-all duration-200 border border-slate-800 text-sm hover:border-slate-700"
           >
             Contact Email
