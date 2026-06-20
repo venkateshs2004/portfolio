@@ -1,18 +1,23 @@
+import { useState } from 'react';
 import { FileText, ArrowRight, Server, Cpu, Award } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 
 export default function App() {
   const email: string = '04venkateshs@gmail.com';
-  const mailtoUrl: string = `mailto:${email}?subject=Portfolio%20Inquiry`;
+  const mailtoUrl: string = `mailto:${email}?subject=Interview%20Inquiry%20-%20Venkatesh%20S`;
   const resumeUrl: string = `${import.meta.env.BASE_URL}resume.pdf`;
   const githubUrl: string = 'https://github.com/venkateshs2004';
   const linkedinUrl: string = 'https://linkedin.com/in/venkatesh-s-5665';
+  const [copied, setCopied] = useState<boolean>(false);
 
   const handleEmailClick = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
     try {
       await navigator.clipboard.writeText(email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
     } catch {
       // Ignore clipboard failures and still attempt to open the mail client.
     }
@@ -43,13 +48,23 @@ export default function App() {
             <FileText size={18} />
             View Resume
           </a>
-          <a
-            href={mailtoUrl}
-            onClick={handleEmailClick}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-medium transition-all duration-200 border border-slate-800 text-sm hover:border-slate-700"
-          >
-            Contact Email
-          </a>
+          <div className="relative inline-block">
+            <a
+              href={mailtoUrl}
+              onClick={handleEmailClick}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 font-medium transition-all duration-200 border border-slate-800 text-sm hover:border-slate-700"
+              title="Click to email or copy address"
+            >
+              <span>{email}</span>
+              {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} className="text-slate-500" />}
+            </a>
+
+            {copied && (
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 text-xs font-bold px-2.5 py-1 rounded shadow-md font-mono">
+                Copied!
+              </span>
+            )}
+          </div>
           <a
             href={githubUrl}
             target="_blank"
